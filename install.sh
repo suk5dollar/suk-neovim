@@ -16,11 +16,15 @@ KICKSTARTDIR="$INSTALLDIR/suk-kickstart"
 echo "Creating main setup/install directory"
 mkdir -vp $MAINDIR
 
-echo "Cloning repo into $INSTALLDIR"
-git clone https://github.com/suk5dollar/suk-neovim.git "$INSTALLDIR"
-if [ $? -eq 0 ]; then
-    echo "Failed to clone repo"
-    exit 1
+if [ ! -d "$INSTALLDIR" ]; then
+    echo "Cloning repo into $INSTALLDIR"
+    git clone https://github.com/suk5dollar/suk-neovim.git "$INSTALLDIR"
+    if [ $? -eq 0 ]; then
+        echo "Successfully cloned repo"
+    else
+        echo "Failed to clone repo"
+        exit 1
+    fi
 fi
 
 cd $INSTALLDIR
@@ -64,7 +68,7 @@ ln -s "$KICKSTARTDIR" "$NVIMCONFIGDIR"
 
 # install dependencies
 echo "Install new dependencies"
-sudo pacman -S neovim ripgrep fzf xclip python-virtualenv luarocks go shellcheck --noconfirm
+sudo pacman -S neovim ripgrep fzf xclip python-virtualenv luarocks go shellcheck
 
 
 echo "Done.."
