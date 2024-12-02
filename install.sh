@@ -67,8 +67,25 @@ echo "Creating link to new install/config directory"
 ln -s "$KICKSTARTDIR" "$NVIMCONFIGDIR"
 
 # install dependencies
-echo "Install new dependencies"
-sudo pacman -S neovim ripgrep fzf xclip python-virtualenv luarocks go shellcheck
+echo "Install dependencies"
+PKMGRS="apt packman"
+PKMGR=""
+for opt in $PKMGRS; do
+    cmd="command -v $opt > /dev/null 2>&1"
+    if [ "$($cmd)" ]; then
+        PKMGR=$opt
+        break
+    fi
+done
+
+# will need to swap out xclip for wl-clipboard if ever swap to Wayland or do some checks
+if [ "$PKMGR" = "apt" ]; then       # is fzf still problem on debian?
+    sudo apt install neovim ripgrep fd_find python-virtualenv luarocks go shellcheck xclip
+elif [ "$PKMGR" = "pacman" ]; then
+    sudo pacman -S neovim ripgrep fzf python-virtualenv luarocks go shellshock xclip
+else
+    echo "No supported package manager found"
+fi
 
 
 echo "Done.."
