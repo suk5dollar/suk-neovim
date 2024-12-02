@@ -10,4 +10,5 @@ for opt in $options; do
     fi
 done
 
+echo "Using $pkgr"
 

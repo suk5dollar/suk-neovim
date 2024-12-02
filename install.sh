@@ -66,8 +66,8 @@ rm -rf "$NVIMCACHEDIR"
 echo "Creating link to new install/config directory"
 ln -s "$KICKSTARTDIR" "$NVIMCONFIGDIR"
 
-# install dependencies
-echo "Install dependencies"
+
+# Check for required package mananger
 PKMGRS="apt packman"
 PKMGR=""
 for opt in $PKMGRS; do
@@ -78,6 +78,8 @@ for opt in $PKMGRS; do
     fi
 done
 
+# install dependencies
+echo "Install required depedencies"
 # will need to swap out xclip for wl-clipboard if ever swap to Wayland or do some checks
 if [ "$PKMGR" = "apt" ]; then       # is fzf still problem on debian?
     sudo apt install neovim ripgrep fd_find python-virtualenv luarocks go shellcheck xclip
