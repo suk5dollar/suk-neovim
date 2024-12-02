@@ -35,12 +35,13 @@ mkdir -vp "$BACKUPLOCALDIR"
 mkdir -vp "$BACKUPCACHEDIR"
 
 
-# Backup any existing install config files (if already a link will only save the link not the target)
+# Backup any existing install config files (if already a link will only save the 
+# link not the target)
 ARCHIVEDATE="$(date '+%Y-%m-%d_%H:%M:%S')"
 if [ -d "$NVIMCONFIGDIR" ]; then
     echo "Backing up: $NVIMCONFIGDIR"
     ARCHIVE="$BACKUPCONFIGDIR/$ARCHIVEDATE.tar.gz"
-    tar -czf "$ARCHIVE" "$NVIMCONFIGDIR"                            # REMOVED -v flag bcs spams like fck on cache
+    tar -czf "$ARCHIVE" "$NVIMCONFIGDIR"                # REMOVED -v flag bcs spams like fck
     echo "Backed up existing .config/nvim files: $ARCHIVE"
 fi
  if [ -d "$NVIMLOCALDIR" ]; then
@@ -63,7 +64,7 @@ rm -rf "$NVIMLOCALDIR"
 rm -rf "$NVIMCACHEDIR"
 
 # link .config/nvim to suk-kickstart in setup directory
-echo "Creating link to new install directory"
+echo "Creating link to new install/config directory"
 ln -s "$KICKSTARTDIR" "$NVIMCONFIGDIR"
 
 # install dependencies
