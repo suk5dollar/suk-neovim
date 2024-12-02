@@ -10,16 +10,16 @@ NVIMCONFIGDIR="$HOME/.config/nvim"
 NVIMLOCALDIR="$HOME/.local/share/nvim"
 NVIMCACHEDIR="$HOME/.cache/nvim"
 KICKSTARTDIR="$INSTALLDIR/suk-kickstart"
-
+GITURL="https://github.com/suk5dollar/suk-neovim.git"
+GITCMD="git clone $GITURL $INSTALLDIR"
 
 # Create main install directory used for all setups
 echo "Creating main setup/install directory"
-mkdir -vp $MAINDIR
+mkdir -vp "$MAINDIR"
 
 if [ ! -d "$INSTALLDIR" ]; then
     echo "Cloning repo into $INSTALLDIR"
-    git clone https://github.com/suk5dollar/suk-neovim.git "$INSTALLDIR"
-    if [ $? -eq 0 ]; then
+    if [ ! "$($GITCMD)" ]; then
         echo "Successfully cloned repo"
     else
         echo "Failed to clone repo"
@@ -27,13 +27,12 @@ if [ ! -d "$INSTALLDIR" ]; then
     fi
 fi
 
-cd $INSTALLDIR
+cd "$INSTALLDIR"
 
 echo "Creating backup directories"
 mkdir -vp "$BACKUPCONFIGDIR"
 mkdir -vp "$BACKUPLOCALDIR"
 mkdir -vp "$BACKUPCACHEDIR"
-
 
 # Backup any existing install config files (if already a link will only save the 
 # link not the target)
