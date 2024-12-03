@@ -18,7 +18,7 @@ local config = function()
       lualine_y = { 'progress' },
       lualine_z = { 'location' },
     },
-    sections = {},
+    --    sections = {},
   }
 end
 
