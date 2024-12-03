@@ -13,10 +13,38 @@ KICKSTARTDIR="$INSTALLDIR/suk-kickstart"
 GITURL="https://github.com/suk5dollar/suk-neovim.git"
 GITCMD="git clone $GITURL $INSTALLDIR"
 
+
+# Check running Platform
+echo "Checking running platform"
+cmd="command uname -n"
+if [ ! "$($cmd)" = "archlinix" ]; then
+    echo "Not running on Arch"
+    exit 1
+fi
+
+# Check for package manager (not really required as already check for archlinux)
+echo "Checking required package manager is installed"
+cmd="command -v pacman > /dev/null 2>&1"
+if [ ! "$($cmd)" ]; then
+    echo "Pacman is not on this system"
+    exit 1
+fi
+
+# Check for git
+echo "Checking for git installation"
+cmd="command git -v > /dev/null 2>&1"
+if [ ! "$($cmd)" ]; then
+    echo "Git not found on this system"
+    exit 1
+fi
+ 
+
 # Create main install directory used for all setups
 echo "Creating main setup/install directory"
 mkdir -vp "$MAINDIR"
 
+
+# Clone repo
 if [ ! -d "$INSTALLDIR" ]; then
     echo "Cloning repo into $INSTALLDIR"
     if [ ! "$($GITCMD)" ]; then
@@ -67,27 +95,9 @@ echo "Creating link to new install/config directory"
 ln -s "$KICKSTARTDIR" "$NVIMCONFIGDIR"
 
 
-# Check for required package mananger
-PKMGRS="apt packman"
-PKMGR=""
-for opt in $PKMGRS; do
-    cmd="command -v $opt > /dev/null 2>&1"
-    if [ "$($cmd)" ]; then
-        PKMGR=$opt
-        break
-    fi
-done
-
-# install dependencies
-echo "Install required depedencies"
+# Install dependecies
 # will need to swap out xclip for wl-clipboard if ever swap to Wayland or do some checks
-if [ "$PKMGR" = "apt" ]; then       # is fzf still problem on debian?
-    sudo apt install neovim ripgrep fd_find python-virtualenv luarocks go shellcheck xclip
-elif [ "$PKMGR" = "pacman" ]; then
-    sudo pacman -S neovim ripgrep fzf python-virtualenv luarocks go shellshock xclip
-else
-    echo "No supported package manager found"
-fi
+sudo pacman -S neovim ripgrep fzf python-virtualenv luarocks go shellshock xclip
 
 
 echo "Done.."
